@@ -18,7 +18,7 @@ def chave_aleatoria(): #Gera a chave aleatória. Rodrigo fez.
     dificuldade = dificuldades[chave]
     return palavra 
 
-def tentativa_player(): #Percorre-se a string da forca e define se o player acertou ou errou. Em caso de errom, perde-se uma vida.
+def tentativa_player(): #Percorre-se a string da forca e define se o player acertou ou errou. Em caso de erro, perde-se uma vida.
     global tentativa
     tentativa = str(input()) #Se o jogador acertar, revela-se parte da palavra. Uma vez estando a palavra toda revelada, o jofador vence (vitoria == True) e fecha-se o game.
     pass #Uma pessoa pode fazer o percorrimento e a outra atrás do design do bonequinho da forca, da barra das palavras etc.
@@ -50,10 +50,20 @@ def percorrimento_palavra(guess, palavra):
         vidas -= 1 #Diminui 1 do total de vidas
     pass
 
-vidas = 5 #Número de tentativas. Podemos mudá-la pensando na dificuldade.
+vidas = 6 #Número de tentativas. Podemos mudá-la pensando na dificuldade.
 vitoria = False #Variável para vencer o jogo.
 play = True #Variável para fechar o jogo, ou dar play again.
 posicoes_a_revelar = [] #este vetor guarda todas as posições dos caracteres corretos
+
+palavras = ["amar", "carro", "casa", "falar", "andar", "ovo", "bolo", "belo", "olho", "cinco",
+            "especial", "teclado", "elefante", "atalho", "amarelo", "futebol", "bicicleta", "enumerar", "colaborar", "apartamento",
+            "volatilidade", "axioma", "azulejo", "xilofone", "intrigante", "pizzaiolo", "endocrinologista", "escaravelho", "ampulheta", "desfibrilador"] #Palavras para usuário acertar (10 fáceis, 10 médias e 10 difíceis).
+categorias = ["Gostar muito.", "Meio de transporte.", "Moradia.", "Dizer.", "Caminhar.", "Alimento.", "Alimento.", "Aquilo que tem beleza.", "Parte da cabeça.", "Numeral.",
+              "Adjetivo.", "Substantivo.", "Substantivo.", "Substantivo.", "Adjetivo.", "Substantivo.", "Substantivo.", "Verbo.", "Verbo.", "Substantivo.",
+              "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"] #Dicas das palavras. As palavras fáceis têm dicas bem descritivas. As médias têm dicas menos descritivas. As difíceis não têm dicas.
+dificuldades = ["F", "F", "F", "F", "F", "F", "F", "F", "F", "F",
+                "M", "M", "M", "M", "M", "M", "M", "M", "M", "M",
+                "D", "D", "D", "D", "D", "D", "D", "D", "D", "D"] #Dificuldade de cada palavra, dividido em fácil (F), média (M) ou difícil (D).
 
 while play: #Main loop do game. Eu (Rodrigo) posso fazer se preferirem.
     while vidas > 0:
