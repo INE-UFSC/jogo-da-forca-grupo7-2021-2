@@ -1,70 +1,105 @@
 import random 
 
-'''
-Time, este é um esboço geral do código. Fi-lo apenas para ter uma noção. Quem não tem trecho definido pode dividir a def tentativa_player(), que é maiorzinha. 
-O main loop, qualquer coisa, podemos fazer juntos.
-'''
-'''
-Dict com as palavras e chaves numéricas (inteiras), outros dicts com infos sobre estas palavras
-devem ter a mesma chave numérica. Outras infos fica a critério do Stephan, só fiz um modelo. 
-'''
-
-def chave_aleatoria(): #Gera a chave aleatória. Rodrigo fez.
+def chave_aleatoria():
     global categoria
     global dificuldade
+    global palavra
     chave = random.randrange(30)
-    palavra = palavras[chave] #Pega a palavra do dict
+    palavra = palavras[chave]
     categoria = categorias[chave] 
     dificuldade = dificuldades[chave]
-    return palavra 
+    print(f'Dica: {categoria} Dificuldade: {dificuldade}')
+    pass
 
-def tentativa_player(): #Percorre-se a string da forca e define se o player acertou ou errou. Em caso de erro, perde-se uma vida.
+def tentativa_player():
     global tentativa
-    tentativa = str(input()) #Se o jogador acertar, revela-se parte da palavra. Uma vez estando a palavra toda revelada, o jofador vence (vitoria == True) e fecha-se o game.
-    pass #Uma pessoa pode fazer o percorrimento e a outra atrás do design do bonequinho da forca, da barra das palavras etc.
+    tentativa = str(input("Digite uma letra:"))
+    pass
 
 def percorrimento_palavra(guess, palavra):
-    #esta função visa detectar se a letra do input esta na palavra selecionada ou não
-    #função que faz a checagem pela letra na palavra
 
-    global vidas #esta variável conta a quantidade de erros
-    global posicoes_a_revelar #lista com a posição dos caracteres da palavra secreta a serem revelados
-    
+    global vidas
+    global posicoes_a_revelar
+    global jogada
+
     if guess in palavra:
-        #caso a letra esteja na palavra secreta
 
         print("acertou")
         
-        for x in range(len(palavra)):
-            #este loop percorre a palavra secreta e registra todas as posições na qual a letra adivinhada é encontrada, mesmo se houver repetições
-            
+        for x in range(len(palavra)):           
             if guess == palavra[x] and x not in posicoes_a_revelar:
-                #esta condicional impede que a mesma posição seja registrada várias vezes no vetor posicoes_a_revelar
                 posicoes_a_revelar.append(x)
-    
-    else:
-        #caso a letra não esteja na palavra secreta
+
+        for y in posicoes_a_revelar:
+            jogada[y] = palavra[y]
         
+        jogada = ''.join(jogada)
+        
+        print(jogada)
+
+        jogada = list(jogada)
+    else:
         print("errou")
         
-        vidas -= 1 #Diminui 1 do total de vidas
+        vidas -= 1 
+
     pass
 
-vidas = 6 #Número de tentativas. Podemos mudá-la pensando na dificuldade.
-vitoria = False #Variável para vencer o jogo.
-play = True #Variável para fechar o jogo, ou dar play again.
-posicoes_a_revelar = [] #este vetor guarda todas as posições dos caracteres corretos
+def jogar_novamente():
+    global play
+    global start
+
+    print("Para jogar novamente, digite 'sim'.")
+    print("Para fechar o jogo, digite 'nao'")
+
+    play_again = str(input())
+
+    if play_again == "sim":
+        vidas = 6
+        play = True
+
+    if play_again == "nao":
+        play = False
+    
+    pass
+
+vidas = 6
+start = True
+play = True
+posicoes_a_revelar = []
 
 palavras = ["amar", "carro", "casa", "falar", "andar", "ovo", "bolo", "belo", "olho", "cinco",
             "especial", "teclado", "elefante", "atalho", "amarelo", "futebol", "bicicleta", "enumerar", "colaborar", "apartamento",
-            "volatilidade", "axioma", "azulejo", "xilofone", "intrigante", "pizzaiolo", "endocrinologista", "escaravelho", "ampulheta", "desfibrilador"] #Palavras para usuário acertar (10 fáceis, 10 médias e 10 difíceis).
+            "volatilidade", "axioma", "azulejo", "xilofone", "intrigante", "pizzaiolo", "endocrinologista", "escaravelho", "ampulheta", "desfibrilador"]
+
 categorias = ["Gostar muito.", "Meio de transporte.", "Moradia.", "Dizer.", "Caminhar.", "Alimento.", "Alimento.", "Aquilo que tem beleza.", "Parte da cabeça.", "Numeral.",
               "Adjetivo.", "Substantivo.", "Substantivo.", "Substantivo.", "Adjetivo.", "Substantivo.", "Substantivo.", "Verbo.", "Verbo.", "Substantivo.",
-              "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"] #Dicas das palavras. As palavras fáceis têm dicas bem descritivas. As médias têm dicas menos descritivas. As difíceis não têm dicas.
+              "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"]
+
 dificuldades = ["F", "F", "F", "F", "F", "F", "F", "F", "F", "F",
                 "M", "M", "M", "M", "M", "M", "M", "M", "M", "M",
-                "D", "D", "D", "D", "D", "D", "D", "D", "D", "D"] #Dificuldade de cada palavra, dividido em fácil (F), média (M) ou difícil (D).
+                "D", "D", "D", "D", "D", "D", "D", "D", "D", "D"]
 
-while play: #Main loop do game. Eu (Rodrigo) posso fazer se preferirem.
-    while vidas > 0:
-        chave_aleatoria
+while play:
+    chave_aleatoria()
+    jogada = [] 
+
+    for i in range(len(palavra)):
+        jogada.append('_')
+    
+    while start:
+        tentativa_player()
+
+        jogada = list(jogada)
+        percorrimento_palavra(tentativa, palavra)
+
+        jogada = ''.join(jogada)       
+        if jogada == palavra:
+            print("Parabéns, você acertou a palavra!")
+            jogar_novamente()
+            break
+
+        if vidas == 0:
+            print("Que pena, você perdeu.")
+            jogar_novamente()
+            break
