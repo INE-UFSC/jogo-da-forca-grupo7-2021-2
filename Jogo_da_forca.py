@@ -4,7 +4,7 @@ def chave_aleatoria():
     global categoria
     global dificuldade
     global palavra
-    chave = random.randrange(30)
+    chave = random.randrange(0, 30)
     palavra = palavras[chave]
     categoria = categorias[chave] 
     dificuldade = dificuldades[chave]
@@ -13,7 +13,9 @@ def chave_aleatoria():
 
 def tentativa_player():
     global tentativa
-    tentativa = str(input("Digite uma letra:"))
+    tentativa = str(input("Digite uma letra: "))
+    if len(tentativa) != 1:
+        tentativa = "-"
     pass
 
 def percorrimento_palavra(guess, palavra):
@@ -50,12 +52,15 @@ def jogar_novamente():
     global start
 
     print("Para jogar novamente, digite 'sim'.")
-    print("Para fechar o jogo, digite 'nao'")
+    print("Para fechar o jogo, digite 'nao'.")
 
     play_again = str(input())
 
     if play_again == "sim":
+        global vidas
         vidas = 6
+        global posicoes_a_revelar
+        posicoes_a_revelar = []
         play = True
 
     if play_again == "nao":
