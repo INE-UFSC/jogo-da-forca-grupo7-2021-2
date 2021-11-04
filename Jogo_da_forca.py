@@ -1,4 +1,5 @@
-import random 
+import random
+import hangman 
 
 def chave_aleatoria():
     global categoria
@@ -43,7 +44,9 @@ def percorrimento_palavra(guess, palavra):
     else:
         print("errou")
         
-        vidas -= 1 
+        vidas -= 1
+
+        hangman.draw(vidas) 
 
     pass
 
